@@ -363,7 +363,7 @@ class CommandDialog():
 
 class Application():
     def __init__(self,bot):
-        self.muckzzbot = bot
+        self.bot = bot
         self.window = tk.Tk()
         self.window.title("Bot Interface")
 
@@ -678,11 +678,11 @@ class Application():
         #####################Built In Commands List######################
 
     def connectBot(self):
-        self.muckzzbot.startConnection(self)
+        self.bot.startConnection(self)
         self.connectButton.config(text="Disconnect",command=self.disconnectBot)
 
     def disconnectBot(self):
-        self.muckzzbot.stopConnection()
+        self.bot.stopConnection()
         self.connectButton.config(text="Connect",command=self.connectBot)
 
     def getBotValues(self):
@@ -701,6 +701,5 @@ class Application():
         pickle.dump(randomMessages,open("randomMessages.p","wb"))
         self.window.destroy()
 
-muckzzbot = Bot()
-Application(muckzzbot)
-connected = False
+bot = Bot()
+Application(bot)
