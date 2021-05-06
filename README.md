@@ -1,7 +1,15 @@
 # Twitch-Bot-Interface
 The application provides an interface for a custom bot  
 Allowing users to set up custom commands for viewers to use, messages to be output after every nth message and show a list of all participants of the chat for the current connection to Twitch's irc.  
-  
+
+## Setting Up
+To set up and connect to a channel you need three pieces of information  
+* The bot username
+* The bot oauth password (https://twitchapps.com/tmi/)
+  * This must include the 'oauth:' part of the string
+* And the name of the channel you want to connect to (proceed this by a #)
+Once these fields are filled in you can connect the bot.
+
 The application provides a navigatable user interface that allows users to set up either "Callable Commands" or "Random Messages".  
 ## Callable Commands 
 allow for a user to type the name of the command into twitch's chat function and receive a response provided certain criteria is met.  
