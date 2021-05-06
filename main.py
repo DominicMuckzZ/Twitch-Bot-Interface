@@ -135,12 +135,14 @@ class Bot():
         
     def connectToChannel(self):
         self.CHAN = self.botApplication.channelName.get()
+        self.NICK = self.botApplication.nickEntry.get()
+        self.PASS = self.botApplication.oauthEntry.get()
         self.connection = socket.socket()
         self.connection.connect((HOST,PORT))
 
-        self.sendPass(PASS)
-        self.sendNick(NICK)
-        self.joinChannel(self.CHAN)
+        self.sendPass()
+        self.sendNick()
+        self.joinChannel()
 
         data = ""
         messageCount = 0
@@ -154,6 +156,9 @@ class Bot():
                 for line in data_split:
                     line = str.rstrip(line)
                     line = str.split(line)
+
+                    if line == [':tmi.twitch.tv', 'NOTICE', '*', ':Login', 'authentication', 'failed']:
+                        raise ConnectionAbortedError
 
                     if len(line) >= 1:
                         if line[0] == 'PING':
@@ -255,17 +260,17 @@ class Bot():
     def sendPong(self,MSG):
         self.connection.send(bytes('PONG {}\r\n'.format(MSG),'UTF-8'))
         
-    def sendPass(self,PASS):
-        self.connection.send(bytes('PASS {}\r\n'.format(PASS),'UTF-8'))
+    def sendPass(self):
+        self.connection.send(bytes('PASS {}\r\n'.format(self.PASS),'UTF-8'))
 
-    def sendNick(self,NICK):
-        self.connection.send(bytes('NICK {}\r\n'.format(NICK),'UTF-8'))
+    def sendNick(self):
+        self.connection.send(bytes('NICK {}\r\n'.format(self.NICK),'UTF-8'))
 
-    def joinChannel(self,CHAN):
-        self.connection.send(bytes('JOIN {}\r\n'.format(CHAN),'UTF-8'))
+    def joinChannel(self):
+        self.connection.send(bytes('JOIN {}\r\n'.format(self.CHAN),'UTF-8'))
 
-    def partChannel(self,CHAN):
-        self.connection.send(bytes('PART {}\r\n'.format(CHAN),'UTF-8'))
+    def partChannel(self):
+        self.connection.send(bytes('PART {}\r\n'.format(self.CHAN),'UTF-8'))
         
 class CommandDialog():
     def __init__(self,parent,name=None,description=None,output=None,active=True,userLevel="viewer",cooldown=5):
