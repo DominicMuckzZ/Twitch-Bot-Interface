@@ -45,12 +45,12 @@ Other settings such as oauth, nick, and channel need to be set up before the bot
 These can be adjusted whilst the bot is connected but will not affect the bot's ability to connect until the next attempt to start a connection  
 The settings for the bot and commands save upon exit of the application and will be remembered for the next use.  
 
-## Current Limitations:
-* Moderators have to be entered manually into the code.  
+## Current Limitations:  
 * There is no built in API access which would allow live data to be retrieved from Twitch  
 * Only one bot "profile" is available and so values must be changed if it is to be used on another channel.  
 * Duplicate command names can not be in use, therefore you are unable to have two commands that share the name "!so" and have two different outputs based on this.  
   * In future updates this may be changed to have the Callable Commands work off a listed system instead of a dictionary, this would allow multiple commands to be used, ones that pertain to the viewers user level to be prioritised and an output be based off these criteria.  
+* A moderator will not be immediately recognised when they come into chat.  
 
 ### New Updates:
-None
+The list of moderators is dynamic and is received through Twitch
