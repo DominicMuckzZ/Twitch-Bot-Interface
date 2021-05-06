@@ -127,12 +127,19 @@ class Bot():
             if self.botApplication.iterateRM:
                 outgoingMessage = randomMessageList[self.rmIndex]
                 self.rmIndex += 1
-                if self.rmIndex > len(randomMessageList):
+                if self.rmIndex >= len(randomMessageList):
                     self.rmIndex = 0
             else:
                 outgoingMessage = random.choice(randomMessageList)
             self.sendMessage(CHAN,outgoingMessage.getOutput())
+
+    def getModerators(self):
+        link = f"http://tmi.twitch.tv/group/user/{self.CHAN.replace('#','')}/chatters"
+        r = requests.get(link)
+        modsJson = r.json()
         
+        return modsJson["chatters"]["moderators"]
+    
     def connectToChannel(self):
         self.CHAN = self.botApplication.channelName.get()
         self.NICK = self.botApplication.nickEntry.get()
@@ -205,7 +212,7 @@ class Bot():
 
     def getUserLevel(self,sender):
         level = 0
-        if sender in moderators:
+        if sender in self.getModerators():
             level = 1
         elif sender == self.CHAN.replace("#",""):
             level = 2
