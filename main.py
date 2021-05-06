@@ -96,7 +96,7 @@ except Exception as e:
 
 cross = u"\u274C"
 tick = u"\u2713"
-moderators = ["moonsugar2","collingwood1718","8_bit_llama"]
+moderators = []
     
 class Bot():
     def __init__(self):
@@ -131,16 +131,16 @@ class Bot():
                     self.rmIndex = 0
             else:
                 outgoingMessage = random.choice(randomMessageList)
-            self.send_message(CHAN,outgoingMessage.getOutput())
+            self.sendMessage(CHAN,outgoingMessage.getOutput())
         
     def connectToChannel(self):
         self.CHAN = self.botApplication.channelName.get()
         self.connection = socket.socket()
         self.connection.connect((HOST,PORT))
 
-        self.send_pass(PASS)
-        self.send_nick(NICK)
-        self.join_channel(self.CHAN)
+        self.sendPass(PASS)
+        self.sendNick(NICK)
+        self.joinChannel(self.CHAN)
 
         data = ""
         messageCount = 0
@@ -157,7 +157,7 @@ class Bot():
 
                     if len(line) >= 1:
                         if line[0] == 'PING':
-                            self.send_pong(line[1])
+                            self.sendPong(line[1])
 
                         if line[1] == 'PRIVMSG':
                             sender = self.getSender(line[0])
@@ -171,7 +171,7 @@ class Bot():
                             if self.parseMessages(sender,message):
                                 messageSplit = message.split(" ")
                                 outgoingMessage = callableCommands[messageSplit[0]].getOutput()
-                                self.send_message(CHAN,self.formatMessage(outgoingMessage,message,sender))
+                                self.sendMessage(CHAN,self.formatMessage(outgoingMessage,message,sender))
                             else:
                                 if self.botApplication.allowMessages:
                                     messageCount += 1
@@ -249,22 +249,22 @@ class Bot():
             outgoingMessage = "".join(outgoingMessage).replace(key,formats[key])
         return outgoingMessage
     
-    def send_message(self, CHAN, MSG):
+    def sendMessage(self, CHAN, MSG):
         self.connection.send(bytes('PRIVMSG {} :{}\r\n'.format(CHAN,MSG),'UTF-8'))
         
-    def send_pong(self,MSG):
+    def sendPong(self,MSG):
         self.connection.send(bytes('PONG {}\r\n'.format(MSG),'UTF-8'))
         
-    def send_pass(self,PASS):
+    def sendPass(self,PASS):
         self.connection.send(bytes('PASS {}\r\n'.format(PASS),'UTF-8'))
 
-    def send_nick(self,NICK):
+    def sendNick(self,NICK):
         self.connection.send(bytes('NICK {}\r\n'.format(NICK),'UTF-8'))
 
-    def join_channel(self,CHAN):
+    def joinChannel(self,CHAN):
         self.connection.send(bytes('JOIN {}\r\n'.format(CHAN),'UTF-8'))
 
-    def part_channel(self,CHAN):
+    def partChannel(self,CHAN):
         self.connection.send(bytes('PART {}\r\n'.format(CHAN),'UTF-8'))
         
 class CommandDialog():
